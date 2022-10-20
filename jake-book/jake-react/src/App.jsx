@@ -1,19 +1,19 @@
-import { useContext, memo } from 'react'
-import { AdminFlagContext } from './components/providers/AdminFlagProvider'
-import { Card } from './components/Card'
+import { useState } from 'react'
+import { useFetchUsers } from './hooks/useFetchUsers'
 
-export const App = memo(() => {
-  const { isAdmin, setIsAdmin } = useContext(AdminFlagContext)
-
-  const onClickSwitch = () => {
-    setIsAdmin(prev => !prev)
-  }
+export const App = () => {
+  const { userList, isLoading, isError, onClickFetchUser } = useFetchUsers()
 
   return (
     <div>
-      { isAdmin ? <span>管理者です</span> : <span>管理者以外です</span> }
-      <button onClick={ onClickSwitch }>切り替え</button>
-      <Card />
+      <button onClick={ onClickFetchUser }>ユーザー取得</button>
+      { isError && <p style={{ color: 'red' }}>エラーが発生しました</p> }
+      { isLoading
+          ? <p>データ取得中です</p>
+          : userList.map(user => (
+            <p key={ user.id }>{ `${user.id}:${user.name} (${user.age}歳)`}</p>
+          ))
+      }
     </div>
   )
-})
+}
