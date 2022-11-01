@@ -1,11 +1,14 @@
 import './App.css';
+import { ArticleHeading } from './components';
+
+const article = {
+  title: 'Hello',
+  content: 'tiger hack',
+  published: false
+}
 
 function App() {
-  return (
-    <div className="App">
-      <h1>Hello Tiger Hack</h1>
-    </div>
-  );
+  return <ArticleHeading article={article} />
 }
 
 export default App;
