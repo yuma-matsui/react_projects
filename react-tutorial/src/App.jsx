@@ -1,9 +1,19 @@
-import { FilterableProductTable } from "./components"
+import { memo } from "react"
+import { Card } from "./components"
+import { useAdminFlag } from "./hooks/useAdminFlag"
 
-const App = () => {
+const App = memo(() => {
+  const { isAdmin, setIsAdmin } = useAdminFlag()
+
+  const onClickSwitch = () => setIsAdmin(prev => !prev)
+  const user = isAdmin ? '管理者です' : '管理者以外です'
   return (
-    <FilterableProductTable />
+    <>
+      <span>{ user }</span>
+      <button onClick={onClickSwitch}>切り替え</button>
+      <Card />
+    </>
   )
-}
+})
 
 export default App
