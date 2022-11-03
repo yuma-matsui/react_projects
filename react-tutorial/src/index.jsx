@@ -111,4 +111,81 @@ const EssayForm = () => {
   )
 }
 
-root.render(<EssayForm />)
+const BoilingVerdict = ({ celsius }) => {
+  if (celsius >= 100) return <p>The water would boil.</p>
+
+  return <p>The water would not boil.</p>
+}
+
+const scaleNames = {
+  c: 'Celsius',
+  f: 'Fahrenheit'
+}
+
+const toCelsius = fahrenheit => (fahrenheit - 32) * 5 / 9
+const toFahrenheit = celsius => (celsius * 9 / 5) + 32
+
+const tryConvert = (temperature, convertFunction) => {
+  const input = parseFloat(temperature)
+  if (Number.isNaN(input)) return ''
+
+  const output = convertFunction(input)
+  const rounded = Math.round(output * 1000) / 1000
+  return rounded.toString()
+}
+
+const TemperatureInput = ({
+  scale,
+  temperature,
+  onChangeTemperature
+}) => {
+  const handleChange = (e) => onChangeTemperature(e.target.value)
+
+  return (
+    <fieldset>
+      <legend>Enter temperature in {scaleNames[scale]}:</legend>
+      <input
+        value={temperature}
+        onChange={handleChange}
+      />
+    </fieldset>
+  )
+}
+
+const Calculator = () => {
+  const [temperature, setTemperature] = useState(0)
+  const [scale, setScale] = useState('c')
+
+  const handleCelsiusChange = temperature => {
+    setScale('c')
+    setTemperature(temperature)
+  }
+
+  const handleFahrenheitChange = temperature => {
+    setScale('f')
+    setTemperature(temperature)
+  }
+
+  const celsius = scale === 'f' ? tryConvert(temperature, toCelsius) : temperature
+  const fahrenheit = scale === 'c' ? tryConvert(temperature, toFahrenheit) : temperature
+
+  return (
+    <>
+      <TemperatureInput
+        scale='c'
+        temperature={celsius}
+        onChangeTemperature={handleCelsiusChange}
+      />
+      <TemperatureInput
+        scale='f'
+        temperature={fahrenheit}
+        onChangeTemperature={handleFahrenheitChange}
+      />
+      <BoilingVerdict
+        celsius={parseFloat(celsius)}
+      />
+    </>
+  )
+}
+
+root.render(<Calculator />)
