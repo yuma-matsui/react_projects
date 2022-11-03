@@ -188,4 +188,28 @@ const Calculator = () => {
   )
 }
 
-root.render(<Calculator />)
+const FancyBorder = ({ color, children }) => {
+  return (
+    <div
+      style={{
+        border: `1px solid ${color}`,
+        padding: '16px'
+      }}
+    >
+      { children}
+    </div>
+  )
+}
+
+const WelcomeDialog = () => {
+  return (
+    <FancyBorder
+      color='skyblue'
+    >
+      <h1>Welcome</h1>
+      <p>Thank you</p>
+    </FancyBorder>
+  )
+}
+
+root.render(<WelcomeDialog />)
