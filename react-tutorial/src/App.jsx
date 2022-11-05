@@ -1,5 +1,5 @@
 import { memo } from "react"
-import { Card } from "./components"
+import { Card, Timer } from "./components"
 import { useAdminFlag } from "./hooks/useAdminFlag"
 
 const App = memo(() => {
@@ -12,6 +12,8 @@ const App = memo(() => {
       <span>{ user }</span>
       <button onClick={onClickSwitch}>切り替え</button>
       <Card />
+      <hr />
+      <Timer />
     </>
   )
 })
