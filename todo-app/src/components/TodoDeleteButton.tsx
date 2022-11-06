@@ -1,27 +1,25 @@
-import { FC, useState } from "react";
-import { useEffect } from "react";
+import { FC } from "react";
 import { memo } from "react"
-import { useTodoItem, useTodoListsContext } from "../hooks";
+import { useSaveTodoItems, useTodoListsContext } from "../hooks";
 import { Todo } from "../types";
 
 type Props = {
-  id: number;
+  item: Todo
 }
 
-const TodoDeleteButton: FC<Props> = memo(({ id }) => {
-  const { todoItems, setTodoItems } = useTodoListsContext()
-  const { todoItem } = useTodoItem(todoItems, id)
+const TodoDeleteButton: FC<Props> = memo(({ item }) => {
+  const { todoItems } = useTodoListsContext()
+
+  const { saveTodoItems } = useSaveTodoItems()
 
   const onClickDelete = () => {
-    const newTodoItems = [...todoItems].filter(item => item !== todoItem)
-    localStorage.setItem('todo-items', JSON.stringify(newTodoItems))
-    setTodoItems(newTodoItems)
+    const newTodoItems = [...todoItems].filter(todoItem => todoItem !== item)
+    saveTodoItems(newTodoItems)
   }
 
   return (
     <button
       onClick={onClickDelete}
-      disabled={todoItem?.completed}
     >
       削除
     </button>

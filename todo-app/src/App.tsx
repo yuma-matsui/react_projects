@@ -7,6 +7,7 @@ function App() {
       <TitleHeader />
       <TodoListsProvider>
         <TodoLists />
+        <hr />
         <TodoCreateForm />
       </TodoListsProvider>
     </>

@@ -1,14 +1,18 @@
 import { useState } from "react"
 import { ChangeEvent } from "react"
-import { useTodoListsContext } from "../hooks"
+import { useSaveTodoItems, useTodoFormInput, useTodoListsContext } from "../hooks"
 
 const TodoCreateForm = () => {
-  const { todoItems, setTodoItems } = useTodoListsContext()
+  const { todoItems } = useTodoListsContext()
 
-  const handleSubmit = (e: ChangeEvent<HTMLFormElement>) => e.preventDefault()
+  const { saveTodoItems } = useSaveTodoItems()
 
-  const [input, setInput] = useState<string>('')
-  const onChangeInput = (e: ChangeEvent<HTMLInputElement>) => setInput(e.target.value)
+  const {
+    onSubmit,
+    input,
+    setInput,
+    onChangeInput
+  } = useTodoFormInput()
   
   const [checked, setChecked] = useState(false)
   const onChangeCheck = (e: ChangeEvent<HTMLInputElement>) => setChecked(e.target.checked)
@@ -23,12 +27,12 @@ const TodoCreateForm = () => {
       id: todoItems.length + 1,
       title: input,
       isPriority: checked,
-      completed: false
+      completed: false,
+      editable: false
     }
 
     const newTodoItems = [...todoItems, todo]
-    localStorage.setItem('todo-items', JSON.stringify(newTodoItems))
-    setTodoItems(newTodoItems)
+    saveTodoItems(newTodoItems)
 
     setInput('')
     setChecked(false)
@@ -36,7 +40,7 @@ const TodoCreateForm = () => {
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={onSubmit}
     >
       <input
         type="text"

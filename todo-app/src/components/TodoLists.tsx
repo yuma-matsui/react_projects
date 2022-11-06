@@ -4,14 +4,15 @@ import TodoList from "./TodoList"
 
 const TodoLists = memo(() => {
   const { todoItems } = useTodoListsContext()
+  const title = todoItems.length > 0 ? 'Your Items' : 'Add your tasks'
 
   return (
     <div>
-      <h2>Your Items</h2>
+      <h2>{title}</h2>
       { todoItems.map(item => (
         <TodoList
           key={item.id}
-          todoItem={item}
+          item={item}
         />
       ))}
     </div>

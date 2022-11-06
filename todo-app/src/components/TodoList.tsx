@@ -3,16 +3,21 @@ import { Todo } from "../types"
 import TodoCompleteCheckBox from "./TodoCompleteCheckBox"
 import TodoDeleteButton from "./TodoDeleteButton"
 import TodoEditButton from "./TodoEditButton"
+import TodoUpdateForm from "./TodoUpdateForm"
 
 type Props = {
-  todoItem: Todo
+  item: Todo
 }
 
-const TodoList: FC<Props> = memo(({ todoItem: { id, title, completed, isPriority} }) => {
+const TodoList: FC<Props> = memo(({ item }) => {
+  const { title, isPriority, completed } = item
   const style = {
     color: isPriority ? 'red' : 'black',
-    textDecoration: completed ? 'line-through' : 'none',
     listStyle: 'none'
+  }
+
+  const pStyle = {
+    textDecoration: completed ? 'line-through' : 'none'
   }
 
   return (
@@ -22,10 +27,19 @@ const TodoList: FC<Props> = memo(({ todoItem: { id, title, completed, isPriority
           display: 'flex',
         }}
       >
-        <TodoCompleteCheckBox id={id}/>
-        <p>{title}</p>
-        <TodoEditButton />
-        <TodoDeleteButton id={id} />
+        <TodoCompleteCheckBox item={item} />
+        { item.editable
+          ? (<>
+              <TodoUpdateForm
+                item={item}
+              />
+            </>)
+          : (<>
+              <p style={pStyle}>{title}</p>
+              <TodoEditButton item={item} />
+            </>)
+        }
+        <TodoDeleteButton item={item} />
       </div>
     </li>
   )

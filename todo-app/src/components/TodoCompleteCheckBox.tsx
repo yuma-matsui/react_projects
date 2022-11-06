@@ -1,31 +1,34 @@
 import { useState } from "react";
 import { ChangeEvent, FC, memo } from "react";
-import { useTodoItem, useTodoListsContext } from "../hooks";
+import { useSaveTodoItems, useTodoListsContext } from "../hooks";
+import { Todo } from "../types";
 
 type Props = {
-  id: number;
+  item: Todo
 }
 
-const TodoCompleteCheckBox: FC<Props> = memo(({ id }) => {
-  const { todoItems, setTodoItems } = useTodoListsContext()
-  const { todoItem } = useTodoItem(todoItems, id)
+const TodoCompleteCheckBox: FC<Props> = memo(({ item }) => {
+  const { id, title, isPriority, completed, editable } = item
+  const { todoItems } = useTodoListsContext()
 
-  const [checked, setChecked] = useState<boolean>(false)
+  const [checked, setChecked] = useState<boolean>(completed)
+
+  const { saveTodoItems } = useSaveTodoItems()
 
   const onChangeComplete = (e: ChangeEvent<HTMLInputElement>) => {
-    setChecked(e.target.checked)
-
-    const newTodoItems = todoItems.map(item => {
-      if (item.id === id) return ({
-        id: item.id,
-        title: item.title,
-        isPriority: item.isPriority,
-        completed: e.target.checked
+    const newTodoItems = todoItems.map(todoItem => {
+      if (todoItem === item) return ({
+        id,
+        title,
+        isPriority,
+        completed: e.target.checked,
+        editable
       })
-      return item
+      return todoItem
     })
-    localStorage.setItem('todo-items', JSON.stringify(newTodoItems))
-    setTodoItems(newTodoItems)
+
+    saveTodoItems(newTodoItems)
+    setChecked(e.target.checked)
   }
 
   return (
