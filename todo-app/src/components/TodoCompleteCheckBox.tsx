@@ -8,7 +8,7 @@ type Props = {
 }
 
 const TodoCompleteCheckBox: FC<Props> = memo(({ item }) => {
-  const { id, title, isPriority, completed, editable } = item
+  const { completed } = item
   const { todoItems } = useTodoListsContext()
 
   const [checked, setChecked] = useState<boolean>(completed)
@@ -18,11 +18,8 @@ const TodoCompleteCheckBox: FC<Props> = memo(({ item }) => {
   const onChangeComplete = (e: ChangeEvent<HTMLInputElement>) => {
     const newTodoItems = todoItems.map(todoItem => {
       if (todoItem === item) return ({
-        id,
-        title,
-        isPriority,
-        completed: e.target.checked,
-        editable
+        ...todoItem,
+        completed: e.target.checked
       })
       return todoItem
     })

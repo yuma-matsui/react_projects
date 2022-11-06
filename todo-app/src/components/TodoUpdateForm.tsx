@@ -7,7 +7,7 @@ type Props = {
 }
 
 const TodoUpdateForm: FC<Props> = ({ item }) => {
-  const { id, title, isPriority, completed } = item
+  const { title } = item
 
   const { todoItems } = useTodoListsContext()
 
@@ -18,10 +18,8 @@ const TodoUpdateForm: FC<Props> = ({ item }) => {
   const onClickUpdate = () => {
     const newTodoItems = todoItems.map(todoItem => {
       if (todoItem === item) return ({
-        id,
+        ...todoItem, 
         title: input,
-        isPriority,
-        completed,
         editable: false
       })
       return todoItem

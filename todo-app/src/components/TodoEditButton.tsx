@@ -7,20 +7,13 @@ type Props = {
 }
 
 const TodoEditButton: FC<Props> = memo(({ item }) => {
-  const { id, title, isPriority, completed } = item
   const { todoItems } = useTodoListsContext()
 
   const { saveTodoItems } = useSaveTodoItems()
 
   const onClickEdit = () => {
     const newTodoItems = todoItems.map(todoItem => {
-      if (todoItem === item) return ({
-        id,
-        title,
-        isPriority,
-        completed,
-        editable: true
-      })
+      if (todoItem === item) return ({ ...todoItem, editable: true })
       return todoItem
     })
 
