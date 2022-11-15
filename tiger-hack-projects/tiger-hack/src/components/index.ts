@@ -1,5 +1,0 @@
-export { default as Title } from './Title'
-export { default as Content } from './Content'
-export { default as PublishButton } from './PublishButton'
-export { default as ArticleHeading } from './ArticleHeading'
-export { default as TitleChangeInput } from './TitleChangeInput'
